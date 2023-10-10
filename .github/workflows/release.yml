@@ -15,11 +15,19 @@ jobs:
     - name: Get tags
       run: git fetch --tags origin
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v3
+    - name: Setup Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
 
-    - name: Install dependencies
-      run: npm install 
+    - name: Setup Poetry
+      uses: abatilo/actions-poetry@v2.1.2
+      with:
+        poetry-version: 1.4.2
+
+    - name: Install Dependencies
+      run: |
+        poetry install
 
     - name: Create Release Pull Request
       id: changesets
@@ -27,6 +35,7 @@ jobs:
       with:
         title: 'New Release'
         commit: 'Release new version'
+        version: npm run version
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -37,7 +46,6 @@ jobs:
         COMMIT_TAG=$(git tag --points-at HEAD)
         if [ -n "$COMMIT_TAG" ]; then
           echo "A tag is attached to HEAD. Creating a new release..."
-          PACKAGE_VERSION=$(node -p "require('./package.json').version")
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
           CHANGELOG=$(awk '
             BEGIN { recording=0; }
@@ -50,8 +58,10 @@ jobs:
                 print;
             }
           ' CHANGELOG.md)
-          gh release create v$PACKAGE_VERSION -t "v$PACKAGE_VERSION" -n "$CHANGELOG"
-          # Add script to publish the package to public repository (e.g. maven central)
+          gh release create $COMMIT_TAG -t "$COMMIT_TAG" -n "$CHANGELOG"
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN_PROD }}
+          poetry build
         else
           echo "No tag attached to HEAD. No new release needed."
         fi

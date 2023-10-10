@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "sdk-release-flow"
+version = "0.1.0"
+description = ""
+authors = ["DeirdreCleary <deirdre@evervault.com>"]
+readme = "README.md"
+packages = [{include = "sdk_release_flow"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

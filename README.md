@@ -1,4 +1,4 @@
-# skd-release-flow
+# sdk-release-flow
 
 ## Steps to setup a repo
 
