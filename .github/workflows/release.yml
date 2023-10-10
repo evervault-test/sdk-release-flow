@@ -28,6 +28,7 @@ jobs:
     - name: Install Dependencies
       run: |
         poetry install
+        npm install
 
     - name: Create Release Pull Request
       id: changesets

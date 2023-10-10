@@ -1,11 +1,11 @@
 {
   "name": "sdk-release-flow",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "version": "changeset version && PACKAGE_VERSION=$(node -p \"require('./package.json').version\") && poetry version $PACKAGE_VERSION"
   },
-  "devDependencies": {
+  "dependencies": {
     "@changesets/cli": "^2.26.2"
   }
 }
