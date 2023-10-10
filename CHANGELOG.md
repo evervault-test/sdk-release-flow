@@ -1,5 +1,11 @@
 # sdk-release-flow
 
+## 2.2.0
+
+### Minor Changes
+
+- 71ba562: Testing minor bump
+
 ## 2.0.2
 
 ### Patch Changes
